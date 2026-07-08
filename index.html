@@ -33,7 +33,7 @@
     </nav>
 
     <main>
-        <!-- Time + Title -->
+      <!-- Time + Title -->
       <div class="hero-titles">
         <div class="hero-left">
           <h2>Good morning cutiee,</h2>
@@ -42,82 +42,111 @@
 
         <div class="hero-time" id="datetime"></div>
       </div>
-   
+
       <!--Random Quote Generator -->
       <div class="quote">
         <i class="ri-double-quotes-l"></i>
-         <div class="quote-card">
+        <div class="quote-card">
+          <p id="quote">"Loading quote..."</p>
 
-    <p id="quote">
-      "Loading quote..."
-    </p>
+          <h3 id="author">— Unknown</h3>
 
-    <h3 id="author">
-      — Unknown
-    </h3>
-
-    <button id="newQuoteBtn">
-      New Quote
-    </button>
-
-  </div>
+          <button id="newQuoteBtn">New Quote</button>
+        </div>
       </div>
 
-<div class="pomo_todo">
-      <!-- //Pomodoro container -->
-   <div class="container">
+      <div class="pomo_todo">
+        <!-- //Pomodoro container -->
+        <div class="container">
+          <h1>Pomodoro Timer</h1>
 
-    <h1>Pomodoro Timer</h1>
+          <p id="mode">Focus Time</p>
 
-    <p id="mode">Focus Time</p>
+          <div class="mode-buttons">
+            <button class="mode-btn active" data-time="1500">25 min</button>
+            <button class="mode-btn" data-time="300">5 min</button>
+            <button class="mode-btn" data-time="900">15 min</button>
+          </div>
 
-    <div class="mode-buttons">
-        <button class="mode-btn active" data-time="1500">25 min</button>
-        <button class="mode-btn" data-time="300">5 min</button>
-        <button class="mode-btn" data-time="900">15 min</button>
-    </div>
+          <h2 id="timer">25:00</h2>
 
-    <h2 id="timer">25:00</h2>
+          <div class="buttons">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+          </div>
+        </div>
 
-    <div class="buttons">
-        <button id="start">Start</button>
-        <button id="pause">Pause</button>
-        <button id="reset">Reset</button>
-    </div>
+        <!-- Todo List -->
+        <div class="Todo-container">
+          <h2>Todo List</h2>
+          <input
+            type="text"
+            name="task"
+            id="task"
+            placeholder="Add a new task and press Enter..."
+          />
+          <button type="submit" id="addBtn">ADD</button>
 
-</div>
+          <ul id="taskList"></ul>
+        </div>
+      </div>
 
-<!-- Todo List -->
-<div class="Todo-container">
-  <h2>Todo List</h2>
-  <input type="text" name="task" id="task" placeholder="Add a new task and press Enter...">
-  <button type="submit" id="addBtn">ADD</button>
+        <div class="planner-weather">
+      <!-- Planner container -->
+      <div class="planner-container">
+        <div class="planner-header">
+          <h2>Daily Planner</h2>
+          <p id="plannerDate"></p>
+        </div>
 
-  <ul id="taskList"></ul>
-</div>
- </div>
+        <div class="planner-input">
+          <input type="time" value="09:00" id="taskTime" />
+          <input type="text" id="taskInput" placeholder="What's the plan..." />
+          <select id="taskPriority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+          <button id="addPlanBtn">ADD</button>
+        </div>
 
-<div class="planner-container">
-  <div class="planner-header">
-    <h2>Daily Planner</h2>
-    <p id="plannerDate"></p>
+        <ul id="planList"></ul>
+      </div>
+
+      <!-- Weather  -->
+     <div class="weather-card" id="weatherWidget">
+  <div class="weather-card-header">
+    <h2>Weather</h2>
+    <span class="weather-status loading" id="weatherStatus">Loading</span>
   </div>
 
-  <div class="planner-input">
-    <input type="time" id="taskTime">
-    <input type="text" id="taskInput" placeholder="What's the plan...">
-    <select id="taskPriority">
-      <option value="low">Low</option>
-      <option value="medium" selected>Medium</option>
-      <option value="high">High</option>
-    </select>
-    <button id="addPlanBtn">ADD</button>
+  <div class="weather-main">
+    <span class="weather-icon" id="weatherIcon">🌡️</span>
+    <span class="weather-temp" id="weatherTemp">--°C</span>
+    <span class="weather-label" id="weatherLabel">Fetching forecast…</span>
   </div>
 
-  <ul id="planList"></ul>
+  <hr class="weather-divider" />
+
+  <div class="weather-stats">
+    <div class="weather-stat">
+      <span class="weather-stat-label">Feels</span>
+      <span class="weather-stat-value" id="weatherFeels">--°</span>
+    </div>
+    <div class="weather-stat">
+      <span class="weather-stat-label">Humidity</span>
+      <span class="weather-stat-value" id="weatherHumidity">--%</span>
+    </div>
+    <div class="weather-stat">
+      <span class="weather-stat-label">Wind</span>
+      <span class="weather-stat-value" id="weatherWind">-- km/h</span>
+    </div>
+  </div>
+</div>
+
 </div>
     </main>
-
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="script.js"></script>
