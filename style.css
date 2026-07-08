@@ -1,43 +1,34 @@
 :root {
-  /* Brand */
   --primary: #d946ef;
   --primary-hover: #c026d3;
   --secondary: #8b5cf6;
   --accent: #22d3ee;
 
-  /* Backgrounds */
   --bg: #0f172a;
   --surface: #1e293b;
   --surface-light: #334155;
 
-  /* Text */
   --text: #f8fafc;
   --text-muted: #94a3b8;
 
-  /* fonts */
   --ff-logo: "Space Grotesk", sans-serif;
   --ff-heading: "Poppins", sans-serif;
   --ff-body: "Inter", sans-serif;
 
-  /* Borders */
   --border: #334155;
 
-  /* Status */
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
 
-  /* Effects */
   --shadow: rgba(0, 0, 0, 0.25);
   --gradient: linear-gradient(135deg, #d946ef, #8b5cf6);
 
-  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 24px;
 
-  /* Transition */
   --transition: all 0.3s ease;
 }
 
@@ -75,7 +66,6 @@ nav .title {
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--text-muted);
-  
 }
 
 .center-div {
@@ -86,18 +76,16 @@ nav .title {
 .center-div a {
   text-decoration: none;
   color: var(--text);
-  /* background-color: rgb(233, 190, 125); */
   cursor: pointer;
   padding: 10px 12px;
   font-family: var(--ff-heading);
   border-radius: 35px;
-  transition: 0.3s all;
+  transition: var(--transition);
 }
 
 .center-div a:hover {
   background: var(--gradient);
   color: var(--text);
-  
 }
 
 .center-div a.active {
@@ -122,15 +110,15 @@ nav .title {
   transform: rotate(180deg) scale(1.1);
 }
 
-main{
-    width: 100%;
-    height: 100%;
-    background-color: #0a0f1c;
-    display: flex;
-    flex-direction: column;
+main {
+  width: 100%;
+   min-height: 100%;
+  background-color: #0a0f1c;
+  display: flex;
+  flex-direction: column;
 }
 
-.hero-titles{
+.hero-titles {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -139,41 +127,486 @@ main{
 }
 
 .hero-time {
-    text-align: right;
-    font-family: var(--ff-heading);
-    color: var(--text);
-     background: linear-gradient(135deg, var(--surface), var(--surface-light));
-    padding: 15px 18px;
-    border-radius: 25px;
+  text-align: right;
+  font-family: var(--ff-heading);
+  color: var(--text);
+  background: linear-gradient(135deg, var(--surface), var(--surface-light));
+  padding: 15px 18px;
+  border-radius: 25px;
 }
 
 .time {
-    font-size: 1.6rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .date {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-.quote{
-    width: 97%;
-    height: 80px;
-    background-color: var(--surface-light);
-    border-radius: 10px;
-    margin-left: 30px;
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    position: relative;
-    padding: 45px; 
+.quote {
+  width: 97%;
+  min-height: 80px;
+  background-color: var(--surface-light);
+  border-radius: var(--radius-md);
+  margin-left: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 45px;
 }
 
-.quote i{
-    position: absolute;
-    top: 20px;
-    left: 20px;
+.quote i {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: var(--text-muted);
+}
+
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+#quote {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: var(--text);
+  text-align: center;
+  font-style: italic;
+}
+
+#author {
+  text-align: right;
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+#newQuoteBtn {
+  align-self: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  position: absolute;
+  right: 15px;
+}
+
+#newQuoteBtn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+#newQuoteBtn:active {
+  transform: scale(0.97);
+}
+
+.container {
+  max-width: 420px;
+  margin: 30px;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, var(--surface), var(--surface-light));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 30px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  text-align: start;
+}
+
+.container h1 {
+  font-family: var(--ff-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+#mode {
+  font-family: var(--ff-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+}
+
+#timer {
+  font-family: var(--ff-logo);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 2px;
+  margin-bottom: 35px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.buttons button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--ff-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#start {
+  background: var(--gradient);
+}
+
+#start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(217, 70, 239, 0.4);
+}
+
+#pause {
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+}
+
+#pause:hover {
+  background: var(--border);
+}
+
+#reset {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+#reset:hover {
+  background: var(--danger);
+  color: var(--text);
+}
+
+.buttons button:active {
+  transform: scale(0.96);
+}
+.mode-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--ff-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mode-btn:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.mode-btn.active {
+  background: var(--gradient);
+  color: var(--text);
+  border-color: transparent;
+}
+
+.pomo_todo{
+  display: flex;
+  margin-top: 30px;
+}
+
+
+
+.Todo-container {
+  max-width: 100%;
+  margin: 30px 10px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--surface), var(--surface-light));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 30px var(--shadow);
+}
+
+.Todo-container h2 {
+  font-family: var(--ff-heading);
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Todo-container input[type="text"] {
+  width: 90%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-body);
+  margin-bottom: 12px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.Todo-container input[type="text"]:focus {
+  border-color: var(--primary);
+}
+
+.Todo-container button#addBtn {
+  width: fit-content;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--gradient);
+  color: var(--text);
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.Todo-container button#addBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(217, 70, 239, 0.4);
+}
+
+#taskList {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.task-text {
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.delete-btn:hover {
+  color: var(--text);
+  background: var(--danger);
+  border-radius: 50%;
+}
+
+.pomo_todo {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 25px;
+}
+
+.pomo_todo .container,
+.pomo_todo .Todo-container {
+  flex: 1;
+  min-width: 320px;
+  margin: 0;
+}
+
+.planner-container {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, var(--surface), var(--surface-light));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 30px var(--shadow);
+}
+
+.planner-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.planner-header h2 {
+  font-family: var(--ff-heading);
+  color: var(--text);
+}
+
+.planner-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.planner-input {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.planner-input input[type="time"],
+.planner-input select {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-body);
+  outline: none;
+}
+
+.planner-input input[type="text"] {
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-body);
+  outline: none;
+  transition: var(--transition);
+}
+
+.planner-input input[type="text"]:focus {
+  border-color: var(--primary);
+}
+
+.planner-input button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--gradient);
+  color: var(--text);
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.planner-input button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(217, 70, 239, 0.4);
+}
+
+#planList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.plan-item.priority-low {
+  border-left-color: var(--success);
+}
+
+.plan-item.priority-medium {
+  border-left-color: var(--warning);
+}
+
+.plan-item.priority-high {
+  border-left-color: var(--danger);
+}
+
+.plan-item.completed .plan-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.plan-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 70px;
+}
+
+.plan-text {
+  flex: 1;
+  color: var(--text);
+}
+
+.plan-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.delete-btn:hover {
+  color: var(--text);
+  background: var(--danger);
+  border-radius: 50%;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 20px;
+  font-style: italic;
 }
