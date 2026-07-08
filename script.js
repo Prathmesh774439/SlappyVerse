@@ -13,8 +13,7 @@ let isRunning = false;
 function renderTime() {
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  timerDisplay.textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  timerDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 function stopTimer() {
@@ -54,7 +53,11 @@ modeBtns.forEach((modeBtn) => {
     currentDuration = Number(modeBtn.dataset.time);
     timeLeft = currentDuration;
 
-    const labels = { 1500: "Focus Time", 300: "Short Break", 900: "Long Break" };
+    const labels = {
+      1500: "Focus Time",
+      300: "Short Break",
+      900: "Long Break",
+    };
     modeEl.textContent = labels[currentDuration];
 
     renderTime();
@@ -62,7 +65,6 @@ modeBtns.forEach((modeBtn) => {
 });
 
 renderTime();
-
 
 const taskInput = document.querySelector("#task");
 const addBtn = document.querySelector("#addBtn");
@@ -100,11 +102,11 @@ function addTask() {
 
   taskInput.value = "";
   Swal.fire({
-  title: "Task Added :=)",
-  icon: "success",
-  draggable: true,
-  text : "Task added sucessfully!"
-});
+    title: "Task Added :=)",
+    icon: "success",
+    draggable: true,
+    text: "Task added sucessfully!",
+  });
 }
 
 addBtn.addEventListener("click", addTask);
@@ -129,7 +131,7 @@ function renderDate() {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric"
+    year: "numeric",
   });
 }
 
@@ -189,7 +191,7 @@ function renderTasks() {
     li.addEventListener("click", (e) => {
       if (e.target === deleteBtn) return;
       const updated = getTasks().map((t) =>
-        t.id === task.id ? { ...t, completed: !t.completed } : t
+        t.id === task.id ? { ...t, completed: !t.completed } : t,
       );
       saveTasks(updated);
       renderTasks();
@@ -223,7 +225,7 @@ function addPlanTask() {
     time: taskTime.value,
     text,
     priority: taskPriority.value,
-    completed: false
+    completed: false,
   });
 
   saveTasks(tasks);
@@ -241,3 +243,110 @@ taskInput.addEventListener("keydown", (e) => {
 
 renderDate();
 renderTasks();
+/* =========================================================
+   Weather (Open-Meteo — no API key required)
+   ========================================================= */
+ 
+const weatherStatus = document.querySelector("#weatherStatus");
+const weatherIcon = document.querySelector("#weatherIcon");
+const weatherTemp = document.querySelector("#weatherTemp");
+const weatherLabel = document.querySelector("#weatherLabel");
+const weatherFeels = document.querySelector("#weatherFeels");
+const weatherHumidity = document.querySelector("#weatherHumidity");
+const weatherWind = document.querySelector("#weatherWind");
+ 
+// WMO weather codes -> { icon, label }
+// https://open-meteo.com/en/docs -> "WMO Weather interpretation codes"
+const WEATHER_CODES = {
+  0: { icon: "☀️", label: "Clear sky" },
+  1: { icon: "🌤️", label: "Mostly clear" },
+  2: { icon: "⛅", label: "Partly cloudy" },
+  3: { icon: "☁️", label: "Overcast" },
+  45: { icon: "🌫️", label: "Fog" },
+  48: { icon: "🌫️", label: "Fog" },
+  51: { icon: "🌦️", label: "Light drizzle" },
+  53: { icon: "🌦️", label: "Drizzle" },
+  55: { icon: "🌦️", label: "Dense drizzle" },
+  61: { icon: "🌧️", label: "Light rain" },
+  63: { icon: "🌧️", label: "Rain" },
+  65: { icon: "🌧️", label: "Heavy rain" },
+  71: { icon: "🌨️", label: "Light snow" },
+  73: { icon: "🌨️", label: "Snow" },
+  75: { icon: "❄️", label: "Heavy snow" },
+  80: { icon: "🌦️", label: "Rain showers" },
+  81: { icon: "🌦️", label: "Rain showers" },
+  82: { icon: "⛈️", label: "Violent showers" },
+  95: { icon: "⛈️", label: "Thunderstorm" },
+  96: { icon: "⛈️", label: "Thunderstorm, hail" },
+  99: { icon: "⛈️", label: "Thunderstorm, hail" },
+};
+ 
+function setWeatherStatus(state, text) {
+  if (!weatherStatus) return;
+  weatherStatus.textContent = text;
+  weatherStatus.className = `weather-status ${state}`;
+}
+ 
+async function fetchWeather(lat, lon) {
+  const url =
+    `https://api.open-meteo.com/v1/forecast` +
+    `?latitude=${lat}&longitude=${lon}` +
+    `&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m` +
+    `&temperature_unit=celsius&wind_speed_unit=kmh`;
+ 
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Weather request failed: ${res.status}`);
+ 
+  const data = await res.json();
+  const {
+    temperature_2m,
+    apparent_temperature,
+    relative_humidity_2m,
+    weather_code,
+    wind_speed_10m,
+  } = data.current;
+ 
+  const info = WEATHER_CODES[weather_code] || { icon: "🌡️", label: "Unknown" };
+ 
+  weatherIcon.textContent = info.icon;
+  weatherTemp.textContent = `${Math.round(temperature_2m)}°C`;
+  weatherLabel.textContent = info.label;
+  weatherFeels.textContent = `${Math.round(apparent_temperature)}°`;
+  weatherHumidity.textContent = `${Math.round(relative_humidity_2m)}%`;
+  weatherWind.textContent = `${Math.round(wind_speed_10m)} km/h`;
+ 
+  setWeatherStatus("live", "Live");
+}
+ 
+function initWeather() {
+  if (!weatherStatus) return;
+ 
+  if (!("geolocation" in navigator)) {
+    setWeatherStatus("offline", "Offline");
+    weatherLabel.textContent = "Geolocation not supported";
+    return;
+  }
+ 
+  setWeatherStatus("loading", "Loading");
+ 
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      fetchWeather(latitude, longitude).catch(() => {
+        setWeatherStatus("offline", "Offline");
+        weatherLabel.textContent = "Couldn't load weather";
+      });
+    },
+    (err) => {
+      setWeatherStatus("offline", "Offline");
+      weatherLabel.textContent =
+        err.code === err.PERMISSION_DENIED
+          ? "Location permission denied"
+          : "Couldn't get location";
+    },
+    { timeout: 10000, maximumAge: 10 * 60 * 1000 }
+  );
+}
+ 
+initWeather();
+ 
