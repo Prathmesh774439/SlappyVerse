@@ -30,6 +30,36 @@
   --radius-xl: 24px;
 
   --transition: all 0.3s ease;
+
+  /* //fonts */
+  --ff-logo: "Cinzel Decorative", serif;
+--ff-heading: "Poppins", sans-serif;
+--ff-body: "Poppins", sans-serif;
+--ff-quote: "Cormorant Garamond", serif;
+--ff-timer: "Bitcount Single", monospace;
+--ff-accent: "Stoke", serif;
+--ff-serif: "Source Serif 4", serif;
+
+}
+
+
+  [data-theme="light"] {
+  --primary: #d946ef;
+  --primary-hover: #c026d3;
+  --secondary: #8b5cf6;
+  --accent: #22d3ee;
+
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-light: #eef2f7;
+
+  --text: #111827;
+  --text-muted: #6b7280;
+
+  --border: #d1d5db;
+
+  --shadow: rgba(0, 0, 0, 0.08);
+  --gradient: linear-gradient(135deg, #d946ef, #8b5cf6);
 }
 
 * {
@@ -62,7 +92,7 @@ nav {
 }
 
 nav .title {
-  font-family: var(--ff-logo);
+ font-family: var(--ff-logo);
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--text-muted);
@@ -113,7 +143,7 @@ nav .title {
 main {
   width: 100%;
   min-height: 100%;
-  background-color: #0a0f1c;
+  background-color: var(--bg);
   display: flex;
   flex-direction: column;
 }
@@ -176,6 +206,8 @@ main {
 #quote {
   font-size: 1.5rem;
   line-height: 1.7;
+   font-family: var(--ff-quote);
+   width: 90%;
   color: var(--text);
   text-align: center;
   font-style: italic;
@@ -184,6 +216,7 @@ main {
 #author {
   text-align: right;
   font-size: 1rem;
+  font-family: "Cormorant Infant", serif;
   color: var(--text-muted);
   font-weight: 600;
 }
@@ -250,6 +283,8 @@ main {
   font-weight: 700;
   color: var(--text);
   letter-spacing: 2px;
+  font-family: var(--ff-timer);
+  font-variant-numeric: tabular-nums;
   margin-bottom: 35px;
 }
 
@@ -587,6 +622,19 @@ main {
   border-radius: var(--radius-sm);
 }
 
+.plan-tag,
+.mode-btn {
+  font-family: var(--ff-accent);
+  letter-spacing: 0.5px;
+}
+.empty-state,
+.planner-header p {
+  font-family: var(--ff-serif);
+  font-style: italic;
+}
+.weather-main .weather-temp {
+  font-family: "Bitcount Single", "Space Grotesk", sans-serif;
+}
 .delete-btn {
   background: transparent;
   border: none;
@@ -611,12 +659,12 @@ main {
 
 .weather-card {
   background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+  color: #f5f5f7;
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 24px 28px 20px;
   width: 100%;
   /* max-width: 420px; */
-  color: #f5f5f7;
   font-family: inherit;
 }
 
@@ -635,7 +683,7 @@ main {
 .weather-status {
   font-size: 0.8rem;
   color: #9a9aa2;
-  background: #2a2b31;
+  background: var(--surface-light);
   padding: 6px 14px;
   border-radius: 999px;
 }
@@ -671,7 +719,7 @@ main {
 
 .weather-main .weather-label {
   font-size: 1rem;
-  color: #9a9aa2;
+  color: var(--text-muted);
 }
 
 .weather-divider {
@@ -707,12 +755,12 @@ main {
 
 .weather-stat-label {
   font-size: 0.85rem;
-  color: #9a9aa2;
+    color: var(--text-muted);
 }
 
 .weather-stat-value {
   font-size: 1.05rem;
-  color: #f5f5f7;
+  color: var(--text);
 }
 
 .weather-error {
@@ -727,4 +775,97 @@ main {
   margin: 30px ;
 
   gap: 25px;
+}
+
+body,
+nav,
+main,
+.container,
+.Todo-container,
+.planner-container,
+.quote,
+.weather-card,
+button,
+input,
+select {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
+
+
+/* //extra codes */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container,
+.Todo-container,
+.planner-container,
+.weather-card,
+.quote {
+  animation: fadeUp 0.5s ease both;
+}
+
+.container { animation-delay: 0.05s; }
+.Todo-container { animation-delay: 0.1s; }
+.planner-container { animation-delay: 0.15s; }
+.weather-card { animation-delay: 0.2s; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.task-item, .plan-item {
+  animation: slideIn 0.3s ease both;
+}
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 0 rgba(217,70,239,0); }
+  50% { text-shadow: 0 0 20px rgba(217,70,239,0.5); }
+}
+
+#timer.running {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.center-div a {
+  position: relative;
+  overflow: hidden;
+}
+
+.center-div a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.center-div a:hover::after {
+  width: 60%;
+}
+
+.task-item.completed {
+  animation: strikeThrough 0.3s ease;
+}
+
+@keyframes strikeThrough {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.quote-card.fade {
+  animation: quoteFade 0.4s ease;
+}
+@keyframes quoteFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

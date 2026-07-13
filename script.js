@@ -5,6 +5,8 @@ const pause = document.querySelector("#pause");
 const reset = document.querySelector("#reset");
 const modeBtns = document.querySelectorAll(".mode-btn");
 
+const todoInput = document.querySelector("#task");
+
 let currentDuration = 25 * 60;
 let timeLeft = currentDuration;
 let interval = null;
@@ -65,14 +67,35 @@ modeBtns.forEach((modeBtn) => {
 });
 
 renderTime();
+const quoteEl = document.querySelector("#quote");
+const authorEl = document.querySelector("#author");
+const newQuoteBtn = document.querySelector("#newQuoteBtn");
 
-const taskInput = document.querySelector("#task");
+async function fetchQuote() {
+  try {
+    const res = await fetch("https://dummyjson.com/quotes/random");
+    const data = await res.json();
+
+    quoteEl.textContent = `"${data.quote}"`;
+    authorEl.textContent = `— ${data.author}`;
+  } catch (error) {
+    quoteEl.textContent = "Couldn't load quote.";
+    authorEl.textContent = "";
+    console.error(error);
+  }
+}
+
+fetchQuote();
+
+newQuoteBtn.addEventListener("click", fetchQuote);
+
+const taskInput = document.querySelector("#taskInput");
 const addBtn = document.querySelector("#addBtn");
 const taskList = document.querySelector("#taskList");
 
 function addTask() {
-  const text = taskInput.value.trim();
-
+  const text = todoInput.value.trim();
+todoInput.value = "";
   if (text === "") {
     Swal.fire("Please enter a task before adding.");
     return;
@@ -109,19 +132,23 @@ function addTask() {
   });
 }
 
-addBtn.addEventListener("click", addTask);
-
 taskInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     addTask();
   }
 });
 
+
+todoInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") addTask();
+});
 const plannerDate = document.querySelector("#plannerDate");
 const taskTime = document.querySelector("#taskTime");
 const taskPriority = document.querySelector("#taskPriority");
 const addPlanBtn = document.querySelector("#addPlanBtn");
 const planList = document.querySelector("#planList");
+
+
 
 const STORAGE_KEY = "dailyPlannerTasks";
 
@@ -350,3 +377,31 @@ function initWeather() {
  
 initWeather();
  
+
+//Theme
+const themeToggle = document.querySelector("#themeToggle");
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+  document.documentElement.setAttribute("data-theme", savedTheme);
+}
+
+themeToggle.addEventListener("click", () => {
+  const isLight =
+    document.documentElement.getAttribute("data-theme") === "light";
+
+  if (isLight) {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.removeItem("theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+});
+
+
+const card = document.querySelector('.quote-card');
+card.classList.remove('fade');
+void card.offsetWidth; // reflow trick to restart animation
+card.classList.add('fade');
