@@ -127,17 +127,48 @@ nav .title {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: var(--text);
+   background: var(--gradient);
+  box-shadow: 0 0 14px rgba(217, 70, 239, 0.4);  /* light bg in dark theme */
   border: 1px solid var(--border);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-div img {
+  width: 22px;
+  height: 22px;
+  transition: filter 0.3s ease;
+  filter: invert(1);      /* icon dark on light bg */
 }
 
 .theme-div:hover {
-  transform: rotate(180deg) scale(1.1);
+  background: var(--gradient);
+  box-shadow: 0 0 14px rgba(217, 70, 239, 0.4);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.theme-div:hover img {
+  filter: invert(0) brightness(2);   /* white icon visible on gradient */
+}
+
+.theme-div:active {
+  transform: rotate(180deg) scale(0.92);
+}
+
+/* LIGHT THEME: invert the button — now it's dark */
+[data-theme="light"] .theme-div {
+  background: #1e293b;
+}
+
+[data-theme="light"] .theme-div img {
+  filter: invert(1);   /* icon white on dark bg */
+}
+
+[data-theme="light"] .theme-div:hover img {
+  filter: invert(1) brightness(1.5);
 }
 
 main {
@@ -204,10 +235,10 @@ main {
 }
 
 #quote {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   line-height: 1.7;
    font-family: var(--ff-quote);
-   width: 90%;
+   width: 88%;
   color: var(--text);
   text-align: center;
   font-style: italic;

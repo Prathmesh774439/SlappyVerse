@@ -1,11 +1,12 @@
+/* =========================================================
+   Pomodoro Timer
+   ========================================================= */
 const timerDisplay = document.querySelector("#timer");
 const modeEl = document.querySelector("#mode");
 const start = document.querySelector("#start");
 const pause = document.querySelector("#pause");
 const reset = document.querySelector("#reset");
 const modeBtns = document.querySelectorAll(".mode-btn");
-
-const todoInput = document.querySelector("#task");
 
 let currentDuration = 25 * 60;
 let timeLeft = currentDuration;
@@ -21,11 +22,13 @@ function renderTime() {
 function stopTimer() {
   clearInterval(interval);
   isRunning = false;
+  timerDisplay.classList.remove("running");
 }
 
 start.addEventListener("click", () => {
   if (isRunning) return;
   isRunning = true;
+  timerDisplay.classList.add("running");
 
   interval = setInterval(() => {
     if (timeLeft <= 0) {
@@ -67,9 +70,44 @@ modeBtns.forEach((modeBtn) => {
 });
 
 renderTime();
+
+/* =========================================================
+   Live Clock
+   ========================================================= */
+const datetimeEl = document.querySelector("#datetime");
+
+function updateClock() {
+  if (!datetimeEl) return;
+  const now = new Date();
+
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const date = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  datetimeEl.innerHTML = `
+    <div class="time">${time}</div>
+    <div class="date">${date}</div>
+  `;
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+/* =========================================================
+   Quote Fetcher
+   ========================================================= */
 const quoteEl = document.querySelector("#quote");
 const authorEl = document.querySelector("#author");
 const newQuoteBtn = document.querySelector("#newQuoteBtn");
+const quoteCard = document.querySelector(".quote-card");
 
 async function fetchQuote() {
   try {
@@ -82,20 +120,29 @@ async function fetchQuote() {
     quoteEl.textContent = "Couldn't load quote.";
     authorEl.textContent = "";
     console.error(error);
+  } finally {
+    // fade animation now runs on every fetch (initial load + button click)
+    if (quoteCard) {
+      quoteCard.classList.remove("fade");
+      void quoteCard.offsetWidth; // reflow trick to restart animation
+      quoteCard.classList.add("fade");
+    }
   }
 }
 
 fetchQuote();
-
 newQuoteBtn.addEventListener("click", fetchQuote);
 
-const taskInput = document.querySelector("#taskInput");
+/* =========================================================
+   Todo List
+   ========================================================= */
+const todoTextInput = document.querySelector("#task");
 const addBtn = document.querySelector("#addBtn");
 const taskList = document.querySelector("#taskList");
 
 function addTask() {
-  const text = todoInput.value.trim();
-todoInput.value = "";
+  const text = todoTextInput.value.trim();
+
   if (text === "") {
     Swal.fire("Please enter a task before adding.");
     return;
@@ -123,32 +170,31 @@ todoInput.value = "";
   li.appendChild(deleteBtn);
   taskList.appendChild(li);
 
-  taskInput.value = "";
+  todoTextInput.value = "";
+
   Swal.fire({
-    title: "Task Added :=)",
+    title: "Task Added :)",
     icon: "success",
     draggable: true,
-    text: "Task added sucessfully!",
+    text: "Task added successfully!",
   });
 }
 
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addTask();
-  }
-});
+addBtn.addEventListener("click", addTask);
 
-
-todoInput.addEventListener("keydown", (e) => {
+todoTextInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
 });
+
+/* =========================================================
+   Daily Planner
+   ========================================================= */
 const plannerDate = document.querySelector("#plannerDate");
+const plannerTextInput = document.querySelector("#taskInput");
 const taskTime = document.querySelector("#taskTime");
 const taskPriority = document.querySelector("#taskPriority");
 const addPlanBtn = document.querySelector("#addPlanBtn");
 const planList = document.querySelector("#planList");
-
-
 
 const STORAGE_KEY = "dailyPlannerTasks";
 
@@ -239,7 +285,7 @@ function renderTasks() {
 }
 
 function addPlanTask() {
-  const text = taskInput.value.trim();
+  const text = plannerTextInput.value.trim();
 
   if (text === "") {
     alert("Please enter a task before adding.");
@@ -258,22 +304,22 @@ function addPlanTask() {
   saveTasks(tasks);
   renderTasks();
 
-  taskInput.value = "";
+  plannerTextInput.value = "";
   taskTime.value = "";
 }
 
 addPlanBtn.addEventListener("click", addPlanTask);
 
-taskInput.addEventListener("keydown", (e) => {
+plannerTextInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addPlanTask();
 });
 
 renderDate();
 renderTasks();
+
 /* =========================================================
    Weather (Open-Meteo — no API key required)
    ========================================================= */
- 
 const weatherStatus = document.querySelector("#weatherStatus");
 const weatherIcon = document.querySelector("#weatherIcon");
 const weatherTemp = document.querySelector("#weatherTemp");
@@ -281,7 +327,7 @@ const weatherLabel = document.querySelector("#weatherLabel");
 const weatherFeels = document.querySelector("#weatherFeels");
 const weatherHumidity = document.querySelector("#weatherHumidity");
 const weatherWind = document.querySelector("#weatherWind");
- 
+
 // WMO weather codes -> { icon, label }
 // https://open-meteo.com/en/docs -> "WMO Weather interpretation codes"
 const WEATHER_CODES = {
@@ -307,23 +353,23 @@ const WEATHER_CODES = {
   96: { icon: "⛈️", label: "Thunderstorm, hail" },
   99: { icon: "⛈️", label: "Thunderstorm, hail" },
 };
- 
+
 function setWeatherStatus(state, text) {
   if (!weatherStatus) return;
   weatherStatus.textContent = text;
   weatherStatus.className = `weather-status ${state}`;
 }
- 
+
 async function fetchWeather(lat, lon) {
   const url =
     `https://api.open-meteo.com/v1/forecast` +
     `?latitude=${lat}&longitude=${lon}` +
     `&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m` +
     `&temperature_unit=celsius&wind_speed_unit=kmh`;
- 
+
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Weather request failed: ${res.status}`);
- 
+
   const data = await res.json();
   const {
     temperature_2m,
@@ -332,30 +378,30 @@ async function fetchWeather(lat, lon) {
     weather_code,
     wind_speed_10m,
   } = data.current;
- 
+
   const info = WEATHER_CODES[weather_code] || { icon: "🌡️", label: "Unknown" };
- 
+
   weatherIcon.textContent = info.icon;
   weatherTemp.textContent = `${Math.round(temperature_2m)}°C`;
   weatherLabel.textContent = info.label;
   weatherFeels.textContent = `${Math.round(apparent_temperature)}°`;
   weatherHumidity.textContent = `${Math.round(relative_humidity_2m)}%`;
   weatherWind.textContent = `${Math.round(wind_speed_10m)} km/h`;
- 
+
   setWeatherStatus("live", "Live");
 }
- 
+
 function initWeather() {
   if (!weatherStatus) return;
- 
+
   if (!("geolocation" in navigator)) {
     setWeatherStatus("offline", "Offline");
     weatherLabel.textContent = "Geolocation not supported";
     return;
   }
- 
+
   setWeatherStatus("loading", "Loading");
- 
+
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const { latitude, longitude } = position.coords;
@@ -374,13 +420,13 @@ function initWeather() {
     { timeout: 10000, maximumAge: 10 * 60 * 1000 }
   );
 }
- 
+
 initWeather();
- 
 
-//Theme
+/* =========================================================
+   Theme Toggle
+   ========================================================= */
 const themeToggle = document.querySelector("#themeToggle");
-
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme) {
@@ -399,9 +445,3 @@ themeToggle.addEventListener("click", () => {
     localStorage.setItem("theme", "light");
   }
 });
-
-
-const card = document.querySelector('.quote-card');
-card.classList.remove('fade');
-void card.offsetWidth; // reflow trick to restart animation
-card.classList.add('fade');
